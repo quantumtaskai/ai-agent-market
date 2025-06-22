@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agents Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .glass-card { 
+            backdrop-filter: blur(20px); 
+            background: rgba(255, 255, 255, 0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .agent-card {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .agent-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .category-pill {
+            transition: all 0.3s ease;
+        }
+        .category-pill:hover {
+            transform: scale(1.05);
+            background: #4f46e5;
+            color: white;
+        }
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="relative z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">AI</span>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">AgentHub</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Agents</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Categories</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Pricing</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Docs</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Sign In</button>
+                <button class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">Get Started</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative px-6 py-16 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                    <span class="gradient-text">AI Agents</span><br>
+                    <span class="text-gray-900">Marketplace</span>
+                </h1>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+                    Discover, deploy, and scale AI agents designed to automate your business processes. 
+                    From customer service to data analysis, find the perfect AI solution for your needs.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        Explore Agents
+                    </button>
+                    <button class="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-full font-semibold text-lg hover:border-blue-600 hover:text-blue-600 transition-all duration-300">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="max-w-2xl mx-auto mb-16">
+                <div class="relative">
+                    <input type="text" placeholder="Search AI agents..." class="w-full px-6 py-4 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-lg">
+                    <button class="absolute right-3 top-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-2.5 rounded-xl hover:shadow-lg transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="absolute top-20 left-10 w-20 h-20 bg-blue-500/20 rounded-full floating-element" style="animation-delay: 0s;"></div>
+        <div class="absolute top-40 right-20 w-16 h-16 bg-purple-500/20 rounded-full floating-element" style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-20 left-1/4 w-12 h-12 bg-indigo-500/20 rounded-full floating-element" style="animation-delay: 4s;"></div>
+    </section>
+
+    <!-- Categories -->
+    <section class="px-6 py-16">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900">Browse by Category</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+                <div class="category-pill bg-white/80 backdrop-blur-sm p-4 rounded-2xl text-center cursor-pointer shadow-lg">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl mx-auto mb-3 flex items-center justify-center">
+                        <span class="text-2xl">🤖</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">All Agents</span>
+                </div>
+                <div class="category-pill bg-white/80 backdrop-blur-sm p-4 rounded-2xl text-center cursor-pointer shadow-lg">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl mx-auto mb-3 flex items-center justify-center">
+                        <span class="text-2xl">💬</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Customer Service</span>
+                </div>
+                <div class="category-pill bg-white/80 backdrop-blur-sm p-4 rounded-2xl text-center cursor-pointer shadow-lg">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl mx-auto mb-3 flex items-center justify-center">
+                        <span class="text-2xl">📊</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Analytics</span>
+                </div>
+                <div class="category-pill bg-white/80 backdrop-blur-sm p-4 rounded-2xl text-center cursor-pointer shadow-lg">
+                    <div class="w-12 h-12 bg-orange-100 rounded-xl mx-auto mb-3 flex items-center justify-center">
+                        <span class="text-2xl">📝</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Content</span>
+                </div>
+                <div class="category-pill bg-white/80 backdrop-blur-sm p-4 rounded-2xl text-center cursor-pointer shadow-lg">
+                    <div class="w-12 h-12 bg-red-100 rounded-xl mx-auto mb-3 flex items-center justify-center">
+                        <span class="text-2xl">📧</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Email</span>
+                </div>
+                <div class="category-pill bg-white/80 backdrop-blur-sm p-4 rounded-2xl text-center cursor-pointer shadow-lg">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-xl mx-auto mb-3 flex items-center justify-center">
+                        <span class="text-2xl">🔧</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Utilities</span>
+                </div>
+                <div class="category-pill bg-white/80 backdrop-blur-sm p-4 rounded-2xl text-center cursor-pointer shadow-lg">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl mx-auto mb-3 flex items-center justify-center">
+                        <span class="text-2xl">💰</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Sales</span>
+                </div>
+                <div class="category-pill bg-white/80 backdrop-blur-sm p-4 rounded-2xl text-center cursor-pointer shadow-lg">
+                    <div class="w-12 h-12 bg-pink-100 rounded-xl mx-auto mb-3 flex items-center justify-center">
+                        <span class="text-2xl">📈</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Marketing</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Agents -->
+    <section class="px-6 py-16">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900">Featured Agents</h2>
+                <button class="text-blue-600 hover:text-blue-700 font-medium">View All →</button>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Agent Card 1 -->
+                <div class="agent-card rounded-3xl p-8 shadow-xl border border-gray-100">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                            <span class="text-white text-2xl font-bold">CS</span>
+                        </div>
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">Customer Service</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Smart Customer Support Agent</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Automates customer inquiries with intelligent responses, reducing response time by 80% while maintaining high satisfaction rates.</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-yellow-400">★★★★★</span>
+                            <span class="text-sm text-gray-600">(4.9)</span>
+                        </div>
+                        <button class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">
+                            Deploy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Agent Card 2 -->
+                <div class="agent-card rounded-3xl p-8 shadow-xl border border-gray-100">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center">
+                            <span class="text-white text-2xl font-bold">DA</span>
+                        </div>
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">Analytics</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Data Analysis Agent</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Processes complex datasets and generates actionable insights with automated reporting and visualization capabilities.</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-yellow-400">★★★★★</span>
+                            <span class="text-sm text-gray-600">(4.8)</span>
+                        </div>
+                        <button class="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">
+                            Deploy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Agent Card 3 -->
+                <div class="agent-card rounded-3xl p-8 shadow-xl border border-gray-100">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl flex items-center justify-center">
+                            <span class="text-white text-2xl font-bold">CW</span>
+                        </div>
+                        <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-medium">Content</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Content Writing Agent</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Creates high-quality, engaging content across multiple formats while maintaining brand voice and SEO optimization.</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-yellow-400">★★★★☆</span>
+                            <span class="text-sm text-gray-600">(4.7)</span>
+                        </div>
+                        <button class="bg-gradient-to-r from-orange-600 to-red-600 text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">
+                            Deploy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Agent Card 4 -->
+                <div class="agent-card rounded-3xl p-8 shadow-xl border border-gray-100">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center">
+                            <span class="text-white text-2xl font-bold">EA</span>
+                        </div>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium">Email</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Email Automation Agent</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Manages email campaigns with personalized content, smart scheduling, and performance tracking for maximum engagement.</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-yellow-400">★★★★★</span>
+                            <span class="text-sm text-gray-600">(4.9)</span>
+                        </div>
+                        <button class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">
+                            Deploy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Agent Card 5 -->
+                <div class="agent-card rounded-3xl p-8 shadow-xl border border-gray-100">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-r from-indigo-500 to-blue-600 rounded-2xl flex items-center justify-center">
+                            <span class="text-white text-2xl font-bold">SA</span>
+                        </div>
+                        <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-medium">Sales</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Sales Assistant Agent</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Qualifies leads, schedules meetings, and provides sales insights to accelerate your sales pipeline and close deals faster.</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-yellow-400">★★★★☆</span>
+                            <span class="text-sm text-gray-600">(4.6)</span>
+                        </div>
+                        <button class="bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">
+                            Deploy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Agent Card 6 -->
+                <div class="agent-card rounded-3xl p-8 shadow-xl border border-gray-100">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center">
+                            <span class="text-white text-2xl font-bold">TA</span>
+                        </div>
+                        <span class="bg-teal-100 text-teal-700 px-3 py-1 rounded-full text-sm font-medium">Utilities</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Task Automation Agent</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Streamlines repetitive workflows across multiple platforms, saving hours of manual work with intelligent automation.</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-yellow-400">★★★★★</span>
+                            <span class="text-sm text-gray-600">(4.8)</span>
+                        </div>
+                        <button class="bg-gradient-to-r from-teal-600 to-cyan-600 text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">
+                            Deploy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="px-6 py-20">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="glass-card rounded-3xl p-12">
+                <h2 class="text-4xl font-bold text-white mb-6">Ready to Build Your AI Team?</h2>
+                <p class="text-xl text-white/90 mb-8 leading-relaxed">
+                    Join thousands of businesses already using AI agents to streamline operations and boost productivity.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="bg-white text-gray-900 px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        Start Free Trial
+                    </button>
+                    <button class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-gray-900 transition-all duration-300">
+                        Schedule Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="px-6 py-12 bg-gray-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">AI</span>
+                        </div>
+                        <span class="text-xl font-bold text-white">AgentHub</span>
+                    </div>
+                    <p class="text-gray-400">The future of AI automation is here. Build, deploy, and scale AI agents for your business.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Product</h4>
+                    <div class="space-y-2">
+                        <a href="#" class="block text-gray-400 hover:text-white transition-colors">Agents</a>
+                        <a href="#" class="block text-gray-400 hover:text-white transition-colors">Marketplace</a>
+                        <a href="#" class="block text-gray-400 hover:text-white transition-colors">Integrations</a>
+                        <a href="#" class="block text-gray-400 hover:text-white transition-colors">API</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Company</h4>
+                    <div class="space-y-2">
+                        <a href="#" class="block text-gray-400 hover:text-white transition-colors">About</a>
+                        <a href="#" class="block text-gray-400 hover:text-white transition-colors">Blog</a>
+                        <a href="#" class="block text-gray-400 hover:text-white transition-colors">Careers</a>
+                        <a href="#" class="block text-gray-400 hover:text-white transition-colors">Contact</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Support</h4>
+                    <div class="space-y-2">
+                        <a href="#" class="block text-gray-400 hover:text-white transition-colors">Documentation</a>
+                        <a href="#" class="block text-gray-400 hover:text-white transition-colors">Help Center</a>
+                        <a href="#" class="block text-gray-400 hover:text-white transition-colors">Community</a>
+                        <a href="#" class="block text-gray-400 hover:text-white transition-colors">Status</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400">© 2025 AgentHub. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
