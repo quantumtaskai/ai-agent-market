@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agents Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        
+        .agent-card {
+            transition: all 0.3s ease;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .agent-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+            border-color: #d1d5db;
+        }
+        
+        .use-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .use-btn:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6b42c4 100%);
+            transform: translateY(-1px);
+        }
+        
+        .credit-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .nav-tab {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 12px;
+        }
+        
+        .nav-tab.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+        
+        .nav-tab:hover {
+            color: #3b82f6;
+        }
+        
+        .modal-backdrop {
+            backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-content {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+                <div class="flex items-center space-x-3">
+                    <img src="quantum_logo.png" alt="Quantum Logo" class="object-contain">
+                    
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-purple-600 font-semibold">Agents</a>
+                    <a href="#" class="text-gray-600 hover:text-purple-600 font-medium transition-colors">Dashboard</a>
+                    <a href="#" class="text-gray-600 hover:text-purple-600 font-medium transition-colors">Analytics</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-6">
+                <div class="credit-display text-white px-6 py-3 rounded-2xl font-bold text-lg">
+                    <span class="text-sm mr-2">✨</span>
+                    <span id="user-credits">1,250</span> Credits
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="w-11 h-11 bg-gradient-to-r from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center">
+                        <span class="text-white font-bold">JD</span>
+                    </div>
+                    <span class="text-gray-900 font-semibold">John Doe</span>
+                </div>
+            
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Agents Store</h1>
+            <p class="text-gray-600 leading-relaxed max-w-4xl">
+                AI agents are designed to automate specific tasks within enterprise processes using GenAI. By deploying these agents, 
+                organizations can reduce manual workload and enhance operational efficiency across departments, leading to streamlined workflows and improved productivity.
+            </p>
+        </div>
+
+        <!-- Agents Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="agents-grid">
+            
+            <!-- Agent 1 -->
+            <div class="agent-card rounded-lg p-6 shadow-sm border" data-category="automation">
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0 border">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Operations</span>
+                        </div>
+                        <h3 class="text-base font-semibold text-gray-900 mb-2">Technical Language Interpreter AI Agent</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Transforms enterprise jargon into department-specific language, bridging gaps across teams 
+                            by translating complex content into role-relevant insights.
+                        </p>
+                        <button class="use-btn w-full text-white py-2.5 rounded-lg font-medium text-sm" 
+                                onclick="useAgent('Technical Language Interpreter AI Agent', 25)">
+                            Use Agent
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent 2 -->
+            <div class="agent-card rounded-lg p-6 shadow-sm border" data-category="utilities">
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0 border">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Utilities</span>
+                        </div>
+                        <h3 class="text-base font-semibold text-gray-900 mb-2">Multi-format Document Summary Agent</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Automatically generates concise, contextual summaries from documents of various formats 
+                            to speed up reviews, decisions, and knowledge sharing.
+                        </p>
+                        <button class="use-btn w-full text-white py-2.5 rounded-lg font-medium text-sm" 
+                                onclick="useAgent('Multi-format Document Summary Agent', 30)">
+                            Use Agent
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent 3 -->
+            <div class="agent-card rounded-lg p-6 shadow-sm border" data-category="utilities">
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center flex-shrink-0 border">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Utilities</span>
+                        </div>
+                        <h3 class="text-base font-semibold text-gray-900 mb-2">Contextual Email Response Drafting Agent</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Generates context-aware response drafts to inbound queries, accelerating communication 
+                            while ensuring relevance, consistency, and professional tone.
+                        </p>
+                        <button class="use-btn w-full text-white py-2.5 rounded-lg font-medium text-sm" 
+                                onclick="useAgent('Contextual Email Response Drafting Agent', 35)">
+                            Use Agent
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent 4 -->
+            <div class="agent-card rounded-lg p-6 shadow-sm border" data-category="marketing">
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center flex-shrink-0 border">
+                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Marketing</span>
+                        </div>
+                        <h3 class="text-base font-semibold text-gray-900 mb-2">Content Research AI Agent</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Automates structured content creation by generating an outline, identifying keywords, 
+                            gathering web insights, and compiling a coherent, AI-driven arti...
+                        </p>
+                        <button class="use-btn w-full text-white py-2.5 rounded-lg font-medium text-sm" 
+                                onclick="useAgent('Content Research AI Agent', 40)">
+                            Use Agent
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent 5 -->
+            <div class="agent-card rounded-lg p-6 shadow-sm border" data-category="utilities">
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center flex-shrink-0 border">
+                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2v0"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Utilities</span>
+                        </div>
+                        <h3 class="text-base font-semibold text-gray-900 mb-2">Document Translation AI Agent</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Automatically translates content into the desired language, preserving context, 
+                            formatting, and industry-specific terminology.
+                        </p>
+                        <button class="use-btn w-full text-white py-2.5 rounded-lg font-medium text-sm" 
+                                onclick="useAgent('Document Translation AI Agent', 45)">
+                            Use Agent
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent 6 -->
+            <div class="agent-card rounded-lg p-6 shadow-sm border" data-category="utilities">
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-teal-50 rounded-lg flex items-center justify-center flex-shrink-0 border">
+                        <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Utilities</span>
+                        </div>
+                        <h3 class="text-base font-semibold text-gray-900 mb-2">Cultural and Ethical Compliance Agent</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Monitors content for cultural biases, inclusivity, gender neutrality, regional sensitivity, and 
+                            adherence to accessibility standards.
+                        </p>
+                        <button class="use-btn w-full text-white py-2.5 rounded-lg font-medium text-sm" 
+                                onclick="useAgent('Cultural and Ethical Compliance Agent', 50)">
+                            Use Agent
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent 7 -->
+            <div class="agent-card rounded-lg p-6 shadow-sm border" data-category="customer-service">
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0 border">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Customer Service</span>
+                        </div>
+                        <h3 class="text-base font-semibold text-gray-900 mb-2">Smart Follow-Up Email Agent</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Automates and personalizes follow-up emails to customers, ensuring timely responses and 
+                            enhanced customer satisfaction.
+                        </p>
+                        <button class="use-btn w-full text-white py-2.5 rounded-lg font-medium text-sm" 
+                                onclick="useAgent('Smart Follow-Up Email Agent', 30)">
+                            Use Agent
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent 8 -->
+            <div class="agent-card rounded-lg p-6 shadow-sm border" data-category="utilities">
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0 border">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Utilities</span>
+                        </div>
+                        <h3 class="text-base font-semibold text-gray-900 mb-2">Dynamic Knowledge Base Creation Agent</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Creates and updates a knowledge base based on provided input resources, ensuring that the 
+                            information remains current and comprehensive.
+                        </p>
+                        <button class="use-btn w-full text-white py-2.5 rounded-lg font-medium text-sm" 
+                                onclick="useAgent('Dynamic Knowledge Base Creation Agent', 35)">
+                            Use Agent
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent 9 -->
+            <div class="agent-card rounded-lg p-6 shadow-sm border" data-category="utilities">
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center flex-shrink-0 border">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Utilities</span>
+                        </div>
+                        <h3 class="text-base font-semibold text-gray-900 mb-2">Redundancy Deduction Guardrail Agent</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Ensures outputs are concise, unique, and free of repetitive or redundant language, enhancing 
+                            clarity and readability.
+                        </p>
+                        <button class="use-btn w-full text-white py-2.5 rounded-lg font-medium text-sm" 
+                                onclick="useAgent('Redundancy Deduction Guardrail Agent', 25)">
+                            Use Agent
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    <!-- Insufficient Credits Modal -->
+    <div id="insufficient-modal" class="modal-backdrop fixed inset-0 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-6">
+            <div class="modal-content rounded-lg p-8 max-w-md w-full shadow-xl">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">😔</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Not Enough Credits</h3>
+                    <p class="text-gray-600 mb-6">You need more credits to use this agent. Top up your account to continue.</p>
+                    <div class="flex space-x-3">
+                        <button onclick="closeModal()" class="flex-1 bg-gray-100 text-gray-700 py-2.5 rounded-lg font-medium hover:bg-gray-200 transition-colors">
+                            Cancel
+                        </button>
+                        <button onclick="buyCredits()" class="flex-1 use-btn text-white py-2.5 rounded-lg font-medium">
+                            Buy Credits
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal-backdrop fixed inset-0 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-6">
+            <div class="modal-content rounded-lg p-8 max-w-md w-full shadow-xl">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">🎉</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Agent Started!</h3>
+                    <p class="text-gray-600 mb-1" id="success-message">Your AI agent is now processing your request.</p>
+                    <p class="text-gray-500 mb-6 text-sm" id="credits-used"></p>
+                    <button onclick="closeModal()" class="w-full use-btn text-white py-2.5 rounded-lg font-medium">
+                        Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let userCredits = 1250;
+
+        // Update credits display
+        function updateCreditsDisplay() {
+            document.getElementById('user-credits').textContent = userCredits.toLocaleString();
+        }
+
+        // Use agent function
+        function useAgent(agentName, cost) {
+            if (userCredits >= cost) {
+                userCredits -= cost;
+                updateCreditsDisplay();
+                
+                document.getElementById('success-message').textContent = `${agentName} is now working on your task.`;
+                document.getElementById('credits-used').textContent = `${cost} credits used • ${userCredits.toLocaleString()} credits remaining`;
+                document.getElementById('success-modal').classList.remove('hidden');
+            } else {
+                document.getElementById('insufficient-modal').classList.remove('hidden');
+            }
+        }
+
+        // Close modals
+        function closeModal() {
+            document.getElementById('insufficient-modal').classList.add('hidden');
+            document.getElementById('success-modal').classList.add('hidden');
+        }
+
+        // Buy credits
+        function buyCredits() {
+            closeModal();
+            alert('Redirecting to credit purchase page...');
+        }
+
+        // Tab functionality
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.nav-tab').forEach(t => {
+                    t.classList.remove('active', 'text-blue-600');
+                    t.classList.add('text-gray-600');
+                });
+                this.classList.add('active', 'text-blue-600');
+                this.classList.remove('text-gray-600');
+                
+                filterAgents();
+            });
+        });
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', filterAgents);
+
+        function filterAgents() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const activeCategory = document.querySelector('.nav-tab.active')?.getAttribute('data-category') || 'all';
+            const agents = document.querySelectorAll('.agent-card');
+            
+            agents.forEach(agent => {
+                const agentName = agent.querySelector('h3').textContent.toLowerCase();
+                const agentDescription = agent.querySelector('p').textContent.toLowerCase();
+                const agentCategory = agent.getAttribute('data-category');
+                
+                let shouldShow = true;
+                
+                if (searchTerm && !agentName.includes(searchTerm) && !agentDescription.includes(searchTerm)) {
+                    shouldShow = false;
+                }
+                
+                if (activeCategory !== 'all' && agentCategory !== activeCategory) {
+                    shouldShow = false;
+                }
+                
+                agent.style.display = shouldShow ? 'block' : 'none';
+            });
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-backdrop')) {
+                closeModal();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCreditsDisplay();
+        });
+    </script>
+</body>
+</html>
