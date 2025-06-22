@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agents Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .agent-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(30px);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-16px) scale(1.02);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.12);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+        }
+        
+        .use-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .use-btn:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6b42c4 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .use-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .credit-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #f6f8ff 0%, #e8f0fe 50%, #f0f7ff 100%);
+        }
+        
+        .icon-gradient {
+            background: linear-gradient(135deg, var(--from), var(--to));
+        }
+        
+        .floating-orb {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(10deg); }
+        }
+        
+        .search-glass {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .category-chip {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.7);
+        }
+        
+        .category-chip:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .price-tag {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+        
+        .nav-glass {
+            backdrop-filter: blur(30px);
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .modal-backdrop {
+            backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-content {
+            backdrop-filter: blur(30px);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="hero-gradient min-h-screen">
+    <!-- Navigation -->
+    <nav class="nav-glass sticky top-0 z-50 px-6 py-5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-10">
+                <div class="flex flex-col items-center space-y-2">
+                    <img src="quantum_logo.png" alt="Quantum Logo" class="object-contain">
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-purple-600 font-semibold">Agents</a>
+                    <a href="#" class="text-gray-600 hover:text-purple-600 font-medium transition-colors">Dashboard</a>
+                    <a href="#" class="text-gray-600 hover:text-purple-600 font-medium transition-colors">Analytics</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-6">
+                <div class="credit-display text-white px-6 py-3 rounded-2xl font-bold text-lg">
+                    <span class="text-sm mr-2">✨</span>
+                    <span id="user-credits">1,250</span> Credits
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="w-11 h-11 icon-gradient rounded-2xl flex items-center justify-center" style="--from: #ec4899; --to: #be185d;">
+                        <span class="text-white font-bold">JD</span>
+                    </div>
+                    <span class="text-gray-900 font-semibold">John Doe</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="px-6 py-16 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto text-center relative">
+            <!-- Floating Elements -->
+            <div class="floating-orb absolute top-10 left-20 w-20 h-20 bg-purple-300/30 rounded-full"></div>
+            <div class="floating-orb absolute top-20 right-32 w-16 h-16 bg-blue-300/30 rounded-full" style="animation-delay: 2s;"></div>
+            <div class="floating-orb absolute bottom-20 left-1/3 w-12 h-12 bg-pink-300/30 rounded-full" style="animation-delay: 4s;"></div>
+            
+            <h1 class="text-6xl md:text-7xl font-bold mb-8 leading-tight">
+                <span class="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                    AI Agents
+                </span>
+                <br>
+                <span class="text-gray-800">Ready to Use</span>
+            </h1>
+           
+            
+            <!-- Search -->
+            <div class="max-w-2xl mx-auto mb-16">
+                <div class="relative">
+                    <input type="text" id="search-input" placeholder="Search AI agents..." 
+                           class="search-glass w-full px-8 py-5 rounded-3xl text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-xl">
+                    <svg class="absolute right-6 top-6 w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Category Filters -->
+            <div class="flex flex-wrap justify-center gap-4 mb-16">
+                <button class="category-chip px-6 py-3 rounded-2xl font-semibold shadow-lg" data-category="all">All Agents</button>
+                <button class="category-chip px-6 py-3 rounded-2xl font-semibold shadow-lg" data-category="customer-service">Customer Service</button>
+                <button class="category-chip px-6 py-3 rounded-2xl font-semibold shadow-lg" data-category="analytics">Analytics</button>
+                <button class="category-chip px-6 py-3 rounded-2xl font-semibold shadow-lg" data-category="content">Content</button>
+                <button class="category-chip px-6 py-3 rounded-2xl font-semibold shadow-lg" data-category="marketing">Marketing</button>
+                <button class="category-chip px-6 py-3 rounded-2xl font-semibold shadow-lg" data-category="automation">Automation</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agents Grid -->
+    <section class="px-6 pb-20">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto" id="agents-grid">
+                
+                <!-- Agent 1: Support Assistant -->
+                <div class="agent-card rounded-3xl p-6 shadow-xl" data-category="customer-service" data-price="25">
+                    <div class="w-16 h-16 icon-gradient rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg" style="--from: #3b82f6; --to: #1d4ed8;">
+                        <span class="text-2xl">🤖</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Support Assistant</h3>
+                    <p class="text-gray-600 mb-4 text-center leading-relaxed text-sm">
+                        Handles customer inquiries instantly with intelligent responses and seamless escalation.
+                    </p>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="text-yellow-400 text-sm mr-2">★★★★★</div>
+                        <span class="text-gray-600 font-medium text-sm">4.9 (2.3k)</span>
+                    </div>
+                    <div class="price-tag text-white px-3 py-2 rounded-xl font-bold text-center mb-4 text-sm">
+                        25 Credits per use
+                    </div>
+                    <button class="use-btn w-full text-white py-3 rounded-xl font-bold text-sm" 
+                            onclick="useAgent('Support Assistant', 25)">
+                        Use Now
+                    </button>
+                </div>
+
+                <!-- Agent 2: Data Analyzer -->
+                <div class="agent-card rounded-3xl p-6 shadow-xl" data-category="analytics" data-price="45">
+                    <div class="w-16 h-16 icon-gradient rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg" style="--from: #10b981; --to: #059669;">
+                        <span class="text-2xl">📊</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Data Analyzer</h3>
+                    <p class="text-gray-600 mb-4 text-center leading-relaxed text-sm">
+                        Processes complex datasets and generates actionable insights with automated reports.
+                    </p>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="text-yellow-400 text-sm mr-2">★★★★★</div>
+                        <span class="text-gray-600 font-medium text-sm">4.8 (1.8k)</span>
+                    </div>
+                    <div class="price-tag text-white px-3 py-2 rounded-xl font-bold text-center mb-4 text-sm">
+                        45 Credits per use
+                    </div>
+                    <button class="use-btn w-full text-white py-3 rounded-xl font-bold text-sm" 
+                            onclick="useAgent('Data Analyzer', 45)">
+                        Use Now
+                    </button>
+                </div>
+
+                <!-- Agent 3: Content Writer -->
+                <div class="agent-card rounded-3xl p-6 shadow-xl" data-category="content" data-price="35">
+                    <div class="w-16 h-16 icon-gradient rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg" style="--from: #8b5cf6; --to: #7c3aed;">
+                        <span class="text-2xl">✍️</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Content Writer</h3>
+                    <p class="text-gray-600 mb-4 text-center leading-relaxed text-sm">
+                        Creates engaging content while maintaining brand voice and SEO optimization.
+                    </p>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="text-yellow-400 text-sm mr-2">★★★★☆</div>
+                        <span class="text-gray-600 font-medium text-sm">4.7 (3.1k)</span>
+                    </div>
+                    <div class="price-tag text-white px-3 py-2 rounded-xl font-bold text-center mb-4 text-sm">
+                        35 Credits per use
+                    </div>
+                    <button class="use-btn w-full text-white py-3 rounded-xl font-bold text-sm" 
+                            onclick="useAgent('Content Writer', 35)">
+                        Use Now
+                    </button>
+                </div>
+
+                <!-- Agent 4: Email Campaign -->
+                <div class="agent-card rounded-3xl p-6 shadow-xl" data-category="marketing" data-price="30">
+                    <div class="w-16 h-16 icon-gradient rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg" style="--from: #f59e0b; --to: #d97706;">
+                        <span class="text-2xl">📧</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Email Campaign</h3>
+                    <p class="text-gray-600 mb-4 text-center leading-relaxed text-sm">
+                        Automates email campaigns with personalized content and smart scheduling.
+                    </p>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="text-yellow-400 text-sm mr-2">★★★★★</div>
+                        <span class="text-gray-600 font-medium text-sm">4.9 (2.7k)</span>
+                    </div>
+                    <div class="price-tag text-white px-3 py-2 rounded-xl font-bold text-center mb-4 text-sm">
+                        30 Credits per use
+                    </div>
+                    <button class="use-btn w-full text-white py-3 rounded-xl font-bold text-sm" 
+                            onclick="useAgent('Email Campaign', 30)">
+                        Use Now
+                    </button>
+                </div>
+
+                <!-- Agent 5: Task Automator -->
+                <div class="agent-card rounded-3xl p-6 shadow-xl" data-category="automation" data-price="20">
+                    <div class="w-16 h-16 icon-gradient rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg" style="--from: #06b6d4; --to: #0891b2;">
+                        <span class="text-2xl">⚡</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Task Automator</h3>
+                    <p class="text-gray-600 mb-4 text-center leading-relaxed text-sm">
+                        Streamlines repetitive tasks and connects platforms for seamless workflows.
+                    </p>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="text-yellow-400 text-sm mr-2">★★★★★</div>
+                        <span class="text-gray-600 font-medium text-sm">4.8 (4.2k)</span>
+                    </div>
+                    <div class="price-tag text-white px-3 py-2 rounded-xl font-bold text-center mb-4 text-sm">
+                        20 Credits per use
+                    </div>
+                    <button class="use-btn w-full text-white py-3 rounded-xl font-bold text-sm" 
+                            onclick="useAgent('Task Automator', 20)">
+                        Use Now
+                    </button>
+                </div>
+
+                <!-- Agent 6: Social Media Pro -->
+                <div class="agent-card rounded-3xl p-6 shadow-xl" data-category="marketing" data-price="35">
+                    <div class="w-16 h-16 icon-gradient rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg" style="--from: #ec4899; --to: #be185d;">
+                        <span class="text-2xl">📱</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Social Media Pro</h3>
+                    <p class="text-gray-600 mb-4 text-center leading-relaxed text-sm">
+                        Creates and schedules social content with engagement optimization.
+                    </p>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="text-yellow-400 text-sm mr-2">★★★★☆</div>
+                        <span class="text-gray-600 font-medium text-sm">4.5 (2.9k)</span>
+                    </div>
+                    <div class="price-tag text-white px-3 py-2 rounded-xl font-bold text-center mb-4 text-sm">
+                        35 Credits per use
+                    </div>
+                    <button class="use-btn w-full text-white py-3 rounded-xl font-bold text-sm" 
+                            onclick="useAgent('Social Media Pro', 35)">
+                        Use Now
+                    </button>
+                </div>
+
+                <!-- Agent 7: Code Reviewer -->
+                <div class="agent-card rounded-3xl p-6 shadow-xl" data-category="automation" data-price="50">
+                    <div class="w-16 h-16 icon-gradient rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg" style="--from: #374151; --to: #111827;">
+                        <span class="text-2xl">💻</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Code Reviewer</h3>
+                    <p class="text-gray-600 mb-4 text-center leading-relaxed text-sm">
+                        Reviews code for bugs, security issues, and performance optimizations.
+                    </p>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="text-yellow-400 text-sm mr-2">★★★★★</div>
+                        <span class="text-gray-600 font-medium text-sm">4.9 (1.2k)</span>
+                    </div>
+                    <div class="price-tag text-white px-3 py-2 rounded-xl font-bold text-center mb-4 text-sm">
+                        50 Credits per use
+                    </div>
+                    <button class="use-btn w-full text-white py-3 rounded-xl font-bold text-sm" 
+                            onclick="useAgent('Code Reviewer', 50)">
+                        Use Now
+                    </button>
+                </div>
+
+                <!-- Agent 8: Doc Summarizer -->
+                <div class="agent-card rounded-3xl p-6 shadow-xl" data-category="content" data-price="25">
+                    <div class="w-16 h-16 icon-gradient rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg" style="--from: #f59e0b; --to: #d97706;">
+                        <span class="text-2xl">📄</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Doc Summarizer</h3>
+                    <p class="text-gray-600 mb-4 text-center leading-relaxed text-sm">
+                        Extracts key insights from documents and creates concise summaries.
+                    </p>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="text-yellow-400 text-sm mr-2">★★★★☆</div>
+                        <span class="text-gray-600 font-medium text-sm">4.6 (3.5k)</span>
+                    </div>
+                    <div class="price-tag text-white px-3 py-2 rounded-xl font-bold text-center mb-4 text-sm">
+                        25 Credits per use
+                    </div>
+                    <button class="use-btn w-full text-white py-3 rounded-xl font-bold text-sm" 
+                            onclick="useAgent('Doc Summarizer', 25)">
+                        Use Now
+                    </button>
+                </div>
+
+                <!-- Agent 9: Sentiment Analyzer -->
+                <div class="agent-card rounded-3xl p-6 shadow-xl" data-category="analytics" data-price="35">
+                    <div class="w-16 h-16 icon-gradient rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg" style="--from: #8b5cf6; --to: #7c3aed;">
+                        <span class="text-2xl">🎯</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Sentiment Analyzer</h3>
+                    <p class="text-gray-600 mb-4 text-center leading-relaxed text-sm">
+                        Analyzes customer feedback to gauge sentiment and identify improvements.
+                    </p>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="text-yellow-400 text-sm mr-2">★★★★★</div>
+                        <span class="text-gray-600 font-medium text-sm">4.7 (2.1k)</span>
+                    </div>
+                    <div class="price-tag text-white px-3 py-2 rounded-xl font-bold text-center mb-4 text-sm">
+                        35 Credits per use
+                    </div>
+                    <button class="use-btn w-full text-white py-3 rounded-xl font-bold text-sm" 
+                            onclick="useAgent('Sentiment Analyzer', 35)">
+                        Use Now
+                    </button>
+                </div>
+
+                <!-- Agent 10: Chat Assistant -->
+                <div class="agent-card rounded-3xl p-6 shadow-xl" data-category="customer-service" data-price="40">
+                    <div class="w-16 h-16 icon-gradient rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg" style="--from: #6366f1; --to: #4f46e5;">
+                        <span class="text-2xl">💬</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Chat Assistant</h3>
+                    <p class="text-gray-600 mb-4 text-center leading-relaxed text-sm">
+                        Advanced conversational AI that handles complex customer interactions.
+                    </p>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="text-yellow-400 text-sm mr-2">★★★★★</div>
+                        <span class="text-gray-600 font-medium text-sm">4.8 (1.9k)</span>
+                    </div>
+                    <div class="price-tag text-white px-3 py-2 rounded-xl font-bold text-center mb-4 text-sm">
+                        40 Credits per use
+                    </div>
+                    <button class="use-btn w-full text-white py-3 rounded-xl font-bold text-sm" 
+                            onclick="useAgent('Chat Assistant', 40)">
+                        Use Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Insufficient Credits Modal -->
+    <div id="insufficient-modal" class="modal-backdrop fixed inset-0 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-6">
+            <div class="modal-content rounded-3xl p-10 max-w-md w-full shadow-2xl">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-4xl">😔</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">Not Enough Credits</h3>
+                    <p class="text-gray-600 mb-8 text-lg">You need more credits to use this agent. Top up your account to continue.</p>
+                    <div class="flex space-x-4">
+                        <button onclick="closeModal()" class="flex-1 bg-gray-100 text-gray-700 py-4 rounded-2xl font-bold hover:bg-gray-200 transition-colors">
+                            Cancel
+                        </button>
+                        <button onclick="buyCredits()" class="flex-1 use-btn text-white py-4 rounded-2xl font-bold">
+                            Buy Credits
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal-backdrop fixed inset-0 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-6">
+            <div class="modal-content rounded-3xl p-10 max-w-md w-full shadow-2xl">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-4xl">🎉</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">Agent Started!</h3>
+                    <p class="text-gray-600 mb-2 text-lg" id="success-message">Your AI agent is now processing your request.</p>
+                    <p class="text-gray-500 mb-8" id="credits-used"></p>
+                    <button onclick="closeModal()" class="w-full use-btn text-white py-4 rounded-2xl font-bold">
+                        Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let userCredits = 1250;
+
+        // Update credits display
+        function updateCreditsDisplay() {
+            document.getElementById('user-credits').textContent = userCredits.toLocaleString();
+            
+            // Add animation to credit display
+            const creditDisplay = document.querySelector('.credit-display');
+            creditDisplay.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                creditDisplay.style.transform = 'scale(1)';
+            }, 300);
+        }
+
+        // Use agent function
+        function useAgent(agentName, cost) {
+            if (userCredits >= cost) {
+                // Deduct credits
+                userCredits -= cost;
+                updateCreditsDisplay();
+                
+                // Show success modal
+                document.getElementById('success-message').textContent = `${agentName} is now working on your task.`;
+                document.getElementById('credits-used').textContent = `${cost} credits used • ${userCredits.toLocaleString()} credits remaining`;
+                document.getElementById('success-modal').classList.remove('hidden');
+                
+            } else {
+                // Show insufficient credits modal
+                document.getElementById('insufficient-modal').classList.remove('hidden');
+            }
+        }
+
+        // Close modals
+        function closeModal() {
+            document.getElementById('insufficient-modal').classList.add('hidden');
+            document.getElementById('success-modal').classList.add('hidden');
+        }
+
+        // Buy credits (placeholder)
+        function buyCredits() {
+            closeModal();
+            alert('Redirecting to credit purchase page...');
+            // Here you would redirect to payment page
+        }
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            filterAgents();
+        });
+
+        // Category filter
+        document.querySelectorAll('.category-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                // Remove active state from all chips
+                document.querySelectorAll('.category-chip').forEach(c => {
+                    c.style.background = 'rgba(255, 255, 255, 0.7)';
+                    c.style.color = '#374151';
+                });
+                
+                // Add active state to clicked chip
+                this.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                this.style.color = 'white';
+                
+                filterAgents();
+            });
+        });
+
+        function filterAgents() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const activeCategory = document.querySelector('.category-chip[style*="linear-gradient"]')?.getAttribute('data-category') || 'all';
+            
+            const agents = document.querySelectorAll('.agent-card');
+            
+            agents.forEach(agent => {
+                const agentName = agent.querySelector('h3').textContent.toLowerCase();
+                const agentDescription = agent.querySelector('p').textContent.toLowerCase();
+                const agentCategory = agent.getAttribute('data-category');
+                
+                let shouldShow = true;
+                
+                // Search filter
+                if (searchTerm && !agentName.includes(searchTerm) && !agentDescription.includes(searchTerm)) {
+                    shouldShow = false;
+                }
+                
+                // Category filter
+                if (activeCategory !== 'all' && agentCategory !== activeCategory) {
+                    shouldShow = false;
+                }
+                
+                // Show/hide with animation
+                if (shouldShow) {
+                    agent.style.display = 'block';
+                    agent.style.opacity = '0';
+                    agent.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        agent.style.opacity = '1';
+                        agent.style.transform = 'translateY(0)';
+                    }, 100);
+                } else {
+                    agent.style.opacity = '0';
+                    agent.style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        agent.style.display = 'none';
+                    }, 300);
+                }
+            });
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-backdrop')) {
+                closeModal();
+            }
+        });
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCreditsDisplay();
+            
+            // Set first category as active
+            const firstChip = document.querySelector('.category-chip');
+            if (firstChip) {
+                firstChip.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                firstChip.style.color = 'white';
+            }
+        });
+
+        // Add smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
+
+        // Add loading state to buttons
+        function addLoadingState(button) {
+            const originalText = button.textContent;
+            button.textContent = 'Starting...';
+            button.disabled = true;
+            button.style.opacity = '0.7';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.disabled = false;
+                button.style.opacity = '1';
+            }, 2000);
+        }
+
+        // Enhanced use agent function with loading state
+        const originalUseAgent = useAgent;
+        useAgent = function(agentName, cost) {
+            const button = event.target;
+            addLoadingState(button);
+            
+            setTimeout(() => {
+                originalUseAgent(agentName, cost);
+            }, 1500);
+        };
+    </script>
+</body>
+</html>
